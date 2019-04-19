@@ -135,6 +135,6 @@ with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     for epoch in range(10):
         train_x, train_y = load_data(data_path, labels, labels_classes)
-        for i in range(18):
+        for i in range(93):
             loss, acc = sess.run([loss_function, accuracy], feed_dict = {x: train_x[i * batch_size: i * batch_size + batch_size], y: train_y[i * batch_size: i * batch_size + batch_size]})
             print('batch ', i, 'acc = ', acc, ', loss = ', loss)
