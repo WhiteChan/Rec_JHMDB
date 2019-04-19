@@ -32,8 +32,8 @@ def load_data(data_path, labels, labels_classes):
     for path in data_path:
         filename = 'data/' + path[0] + '/' + path[1]
         cap = cv.VideoCapture(filename)        
-        datasets.append(read_video_data(cap))
-        labels_OneHot.append(labels_classes.index(path[0]))
+        datasets = np.append(read_video_data(cap))
+        labels_OneHot = np.append(labels_classes.index(path[0]))
     datasets = datasets.reshape([datasets.shape[0], 30, 240, 320, 1])
     labels_OneHot = np_utils.to_categorical(labels_OneHot)
     
