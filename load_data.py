@@ -103,7 +103,7 @@ with tf.name_scope('C1_Pool'):
 with tf.name_scope('C2_Conv'):
     W2 = weight([3, 3, 3, 2, 4])
     b2 = bias([4])
-    Conv2 = conv3d(C1_Pool, W1) + b1
+    Conv2 = conv3d(C1_Pool, W2) + b2
     C2_Conv = tf.nn.relu(Conv2)
 
 with tf.name_scope('C2_Pool'):
