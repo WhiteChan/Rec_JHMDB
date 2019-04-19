@@ -129,7 +129,7 @@ with tf.name_scope('evaluate_model'):
     correct_prediction = tf.equal(tf.argmax(y_predict, 1), tf.argmax(y, 1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, 'float32'))
 
-batch_size = 50
+batch_size = 10
 
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
