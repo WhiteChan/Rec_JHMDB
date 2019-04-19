@@ -27,8 +27,8 @@ def read_video_data(cap):
     return video_data
 
 def load_data(data_path, labels, labels_classes):
-    datasets = []
-    labels_OneHot = []
+    datasets = list()
+    labels_OneHot = list()
     for path in data_path:
         filename = 'data/' + path[0] + '/' + path[1]
         cap = cv.VideoCapture(filename)        
