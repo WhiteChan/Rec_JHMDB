@@ -106,7 +106,7 @@ with tf.name_scope('C2_Conv'):
     Conv2 = conv3d(C1_Pool, W1) + b1
     C2_Conv = tf.nn.relu(Conv2)
 
-with tf.name_scope('C1_Pool'):
+with tf.name_scope('C2_Pool'):
     C2_Pool = max_pool_3x3(C2_Conv)
 
 with tf.name_scope('D_Flat'):
