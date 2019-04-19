@@ -27,16 +27,14 @@ def read_video_data(cap):
     return video_data
 
 def load_data(data_path, labels, labels_classes):
-    datasets = list()
-    labels_OneHot = list()
+    datasets = np.array([], dtype=np.float)
+    labels_OneHot = np.array([], dtype=np.float)
     for path in data_path:
         filename = 'data/' + path[0] + '/' + path[1]
         cap = cv.VideoCapture(filename)        
         datasets.append(read_video_data(cap))
         labels_OneHot.append(labels_classes.index(path[0]))
-    datasets = np.array(datasets)
     datasets = datasets.reshape([datasets.shape[0], 30, 240, 320, 1])
-    labels_OneHot = np.array(labels_OneHot)
     labels_OneHot = np_utils.to_categorical(labels_OneHot)
     
     return datasets, labels_OneHot
