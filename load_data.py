@@ -89,10 +89,10 @@ def conv3d(x, W):
 def max_pool_3x3(x):
     return tf.nn.max_pool3d(x, ksize=[1, 2, 2, 2, 1], strides=[1, 2, 2, 2, 1], padding='SAME')
 
-x = placeholder("float", shape=[None, 30, 240, 320, 1])
+x = tf.placeholder("float", shape=[None, 30, 240, 320, 1])
 
 with tf.name_scope('C1_Conv'):
-    W1 = weights([3, 3, 3, 1, 2])
+    W1 = weight([3, 3, 3, 1, 2])
     b1 = bias([2])
     Conv1 = conv3d(x, W1) + b1
     C1_Conv = tf.nn.relu(Conv1)
@@ -101,7 +101,7 @@ with tf.name_scope('C1_Pool'):
     C1_Pool = max_pool_3x3(C1_Conv)
 
 with tf.name_scope('C2_Conv'):
-    W2 = weights([3, 3, 3, 1, 4])
+    W2 = weight([3, 3, 3, 1, 4])
     b2 = bias([4])
     Conv2 = conv3d(C1_Pool, W1) + b1
     C2_Conv = tf.nn.relu(Conv2)
@@ -123,7 +123,7 @@ with tf.name_scope('Output_Layer'):
     y_predict = tf.nn.softmax(tf.matmul(D_Hidden, W4) + b4)
 
 with tf.name_scope('optimizer'):
-    y = placeholder("float", shape=[None, 21])
+    y = tf.placeholder("float", shape=[None, 21])
     loss_function = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=y_predict, labels=y))
     optimizer = tf.train.AdamOptimizer(0.0001).minimize(loss_function)
 
