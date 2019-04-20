@@ -51,6 +51,8 @@ for e in labels:
     if e not in labels_classes:
         labels_classes.append(e)
 
+load_data(data_path, labels, labels_classes)
+
 # datasets, all_labels = load_data(data_path, labels, labels_classes)
 
 # # 建立模型
