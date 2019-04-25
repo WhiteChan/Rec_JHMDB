@@ -57,7 +57,7 @@ with tf.name_scope('evaluate_model'):
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, 'float32'))
 
 batch_size = 10
-train_x, train_y = load_data(data_path, labels, labels_classes)
+train_x, train_y = load_data.load_data(data_path, labels, labels_classes)
 index = np.arange(train_x.shape[0])
 np.random.shuffle(index)
 train_x = train_x[index, :, :, :, :]
