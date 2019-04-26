@@ -34,18 +34,46 @@ with tf.name_scope('C2_Conv'):
 with tf.name_scope('C2_Pool'):
     C2_Pool = max_pool_3x3(C2_Conv)
 
-with tf.name_scope('D_Flat'):
-    D_Flat = tf.reshape(C2_Pool, [-1, 153600])
+with tf.name_scope('C3_Conv'):
+    W3 = weight([3, 3, 3, 4, 8])
+    b3 = bias([8])
+    Conv3 = conv3d(C2_Pool, W3) + b3
+    C3_Conv = tf.nn.relu(Conv3)
 
-with tf.name_scope('Hidden_Layer'):
-    W3 = weight([153600, 100])
-    b3 = bias([100])
-    D_Hidden = tf.nn.relu(tf.matmul(D_Flat, W3) + b3)
+with tf.name_scope('C3_Pool'):
+    C3_Pool = max_pool_3x3(C3_Conv)
+
+with tf.name_scope('C4_Conv'):
+    W4 = weight([3, 3, 3, 8, 16])
+    b4 = bias([16])
+    Conv4 = conv3d(C3_Pool, W4) + b4
+    C4_Conv = tf.nn.relu(Conv4)
+
+with tf.name_scope('C4_Pool'):
+    C4_Pool = max_pool_3x3(C4_Conv)
+
+with tf.name_scope('D_Flat'):
+    D_Flat = tf.reshape(C4_Pool, [-1, 9600])
+
+with tf.name_scope('Hidden_Layer1'):
+    W5 = weight([9600, 3000])
+    b5 = bias([3000])
+    D_Hidden1 = tf.nn.relu(tf.matmul(D_Flat, W5) + b5)
+
+with tf.name_scope('Hidden_Layer2'):
+    W6 = weight([3000, 1000])
+    b6 = bias([1000])
+    D_Hidden2 = tf.nn.relu(tf.matmul(D_Hidden1, W5) + b5)
+
+with tf.name_scope('Hidden_Layer3'):
+    W7 = weight([1000, 100])
+    b7 = bias([100])
+    D_Hidden3 = tf.nn.relu(tf.matmul(D_Hidden2, W5) + b5)
 
 with tf.name_scope('Output_Layer'):
-    W4 = weight([100, 21])
-    b4 = bias([21])
-    y_predict = tf.nn.softmax(tf.matmul(D_Hidden, W4) + b4)
+    W8 = weight([100, 21])
+    b8 = bias([21])
+    y_predict = tf.nn.softmax(tf.matmul(D_Hidden3, W8) + b8)
 
 with tf.name_scope('optimizer'):
     y = tf.placeholder("float", shape=[None, 21])
