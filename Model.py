@@ -90,3 +90,4 @@ with tf.Session() as sess:
             print('batch ', i, 'acc = ', acc, ', loss = ', loss)
         test_data, test_label = load_data.load_data(data_path[index[696: ], :], labels, labels_classes)
         test_loss, test_acc = sess.run([loss_function, accuracy], feed_dict = {x: test_data, y: test_label})
+        print('Epoch ', epoch + 1, ': test_loss = ', test_loss, 'test_acc = ', test_acc)
