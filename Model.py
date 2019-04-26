@@ -122,6 +122,7 @@ with tf.Session() as sess:
             train_data = train_data.reshape([24, 30, 240, 320, 1])
             train_data = train_data / 255.
             
+            sess.run(optimizer, feed_dict = {x: train_data, y: train_label})
             loss, acc = sess.run([loss_function, accuracy], feed_dict = {x: train_data, y: train_label})
             print('Epoch ', epoch + 1, 'batch ', i, 'acc = ', acc, ', loss = ', loss)
         # test_loss1, test_acc1 = sess.run([loss_function, accuracy], feed_dict = {x: test_data1, y: test_label1})
