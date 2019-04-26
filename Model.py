@@ -35,7 +35,7 @@ with tf.name_scope('C2_Pool'):
     C2_Pool = max_pool_3x3(C2_Conv)
 
 with tf.name_scope('D_Flat'):
-    D_Flat = tf.reshape(C1_Pool, [-1, 153600])
+    D_Flat = tf.reshape(C2_Pool, [-1, 153600])
 
 with tf.name_scope('Hidden_Layer'):
     W3 = weight([153600, 100])
@@ -85,8 +85,6 @@ with tf.Session() as sess:
             train_data = train_data / 255.
             print(np.shape(train_data))
             print(np.shape(train_label))
-            d_hidden = sess.run(C2_Pool, feed_dict = {x: train_data})
-            print(np.shape(d_hidden))
-            break
-            # loss, acc = sess.run([loss_function, accuracy], feed_dict = {x: train_data, y: train_label})
-            # print('batch ', i, 'acc = ', acc, ', loss = ', loss)
+            
+            loss, acc = sess.run([loss_function, accuracy], feed_dict = {x: train_data, y: train_label})
+            print('batch ', i, 'acc = ', acc, ', loss = ', loss)
