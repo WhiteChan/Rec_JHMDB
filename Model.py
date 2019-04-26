@@ -75,9 +75,13 @@ np.random.shuffle(index)
 # train_label = labels[index[0: 696], :]
 # test_data = datas[index[696:], :, :, :, :]
 # test_label = labels[index[696: ], :]
-test_data, test_label = load_data.load_data(data_path[index[696: ], :], labels, labels_classes)
-test_data = test_data.reshape([-1, 30, 240, 320, 1])
-test_data = test_data / 255.
+test_data1, test_label1 = load_data.load_data(data_path[index[696: 796], :], labels, labels_classes)
+test_data1 = test_data1.reshape([-1, 30, 240, 320, 1])
+test_data1 = test_data1 / 255.
+
+test_data2, test_label2 = load_data.load_data(data_path[index[796: ], :], labels, labels_classes)
+test_data2 = test_data2.reshape([-1, 30, 240, 320, 1])
+test_data2 = test_data2 / 255.
 
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
@@ -89,5 +93,7 @@ with tf.Session() as sess:
             
             loss, acc = sess.run([loss_function, accuracy], feed_dict = {x: train_data, y: train_label})
             print('batch ', i, 'acc = ', acc, ', loss = ', loss)
-        test_loss, test_acc = sess.run([loss_function, accuracy], feed_dict = {x: test_data, y: test_label})
-        print('Epoch ', epoch + 1, ': test_loss = ', test_loss, 'test_acc = ', test_acc)
+        test_loss1, test_acc1 = sess.run([loss_function, accuracy], feed_dict = {x: test_data1, y: test_label1})
+        print('Epoch ', epoch + 1, ': test1_loss = ', test_loss1, 'test1_acc = ', test_acc1)
+        test_loss2, test_acc2 = sess.run([loss_function, accuracy], feed_dict = {x: test_data2, y: test_label2})
+        print('Epoch ', epoch + 1, ': test1_loss = ', test_loss2, 'test1_acc = ', test_acc2)
