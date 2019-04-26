@@ -1,12 +1,7 @@
-import csv
+import pandas as pd 
 import numpy as np
 
-csv_file = csv.reader(open('data.csv', 'r'))
+csv_file = pd.read_csv('data.csv')
 data = []
 i = 0
-for stu in csv_file:
-    data.append(stu)
-    i = i + 1
-    print('load ', i, 'images')
-
-print(np.shape(data))
+print(csv_file.loc[3:6])
