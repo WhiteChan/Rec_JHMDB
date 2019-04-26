@@ -33,7 +33,7 @@ def load_data(data_path, labels, labels_classes):
     i = 0
     for path in data_path:
         filename = 'data/' + path[0] + '/' + path[1]
-        print('load data from: ', filename, i)
+        # print('load data from: ', filename, i)
         i = i + 1
         cap = cv.VideoCapture(filename)        
         datasets = np.append(datasets, read_video_data(cap))
