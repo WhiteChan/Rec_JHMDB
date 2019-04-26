@@ -106,7 +106,7 @@ np.random.shuffle(index)
 
 
 
-test_data1, test_label1 = load_data.load_data(data_path[index[696: 796], :], labels, labels_classes)
+test_data1, test_label1 = load_data.load_data(data_path[index[696: 746], :], labels, labels_classes)
 test_data1 = test_data1.reshape([-1, 30, 240, 320, 1])
 test_data1 = test_data1 / 255.
 
