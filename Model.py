@@ -123,6 +123,8 @@ with tf.Session() as sess:
             train_data = train_data / 255.
             
             sess.run(optimizer, feed_dict = {x: train_data, y: train_label})
+            train_loss, train_acc = sess.run([loss_function, accuracy], feed_dict = {x: train_data, y: train_label})
+            print('Epoch ', epoch + 1, 'Batch', i, 'train_acc = ', train_acc, ', train_loss = ', train_loss)
         loss, acc = sess.run([loss_function, accuracy], feed_dict = {x: test_data1, y: test_label1})
         print('Epoch ', epoch + 1, 'acc1 = ', acc, ', loss1 = ', loss)
         loss, acc = sess.run([loss_function, accuracy], feed_dict = {x: test_data2, y: test_label2})
