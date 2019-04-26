@@ -14,7 +14,7 @@ def conv3d(x, W):
 def max_pool_3x3(x):
     return tf.nn.max_pool3d(x, ksize=[1, 2, 2, 2, 1], strides=[1, 2, 2, 2, 1], padding='SAME')
 
-x = tf.placeholder("float", shape=[None, 30, 240, 320, 1])
+x = tf.placeholder("float32", shape=[None, 30, 240, 320, 1])
 
 with tf.name_scope('C1_Conv'):
     W1 = weight([3, 3, 3, 1, 2])
@@ -76,7 +76,7 @@ with tf.name_scope('Output_Layer'):
     y_predict = tf.nn.softmax(tf.matmul(D_Hidden3, W8) + b8)
 
 with tf.name_scope('optimizer'):
-    y = tf.placeholder("float", shape=[None, 21])
+    y = tf.placeholder("float32", shape=[None, 21])
     loss_function = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=y_predict, labels=y))
     optimizer = tf.train.AdamOptimizer(1e-8).minimize(loss_function)
 
