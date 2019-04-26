@@ -63,12 +63,12 @@ with tf.name_scope('Hidden_Layer1'):
 with tf.name_scope('Hidden_Layer2'):
     W6 = weight([3000, 1000])
     b6 = bias([1000])
-    D_Hidden2 = tf.nn.relu(tf.matmul(D_Hidden1, W5) + b5)
+    D_Hidden2 = tf.nn.relu(tf.matmul(D_Hidden1, W6) + b6)
 
 with tf.name_scope('Hidden_Layer3'):
     W7 = weight([1000, 100])
     b7 = bias([100])
-    D_Hidden3 = tf.nn.relu(tf.matmul(D_Hidden2, W5) + b5)
+    D_Hidden3 = tf.nn.relu(tf.matmul(D_Hidden2, W7) + b7)
 
 with tf.name_scope('Output_Layer'):
     W8 = weight([100, 21])
