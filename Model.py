@@ -88,3 +88,5 @@ with tf.Session() as sess:
             
             loss, acc = sess.run([loss_function, accuracy], feed_dict = {x: train_data, y: train_label})
             print('batch ', i, 'acc = ', acc, ', loss = ', loss)
+        test_data, test_label = load_data.load_data(data_path[index[696: ], :], labels, labels_classes)
+        test_loss, test_acc = sess.run([loss_function, accuracy], feed_dict = {x: test_data, y: test_label})
