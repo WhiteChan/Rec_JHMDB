@@ -79,4 +79,4 @@ for e in labels:
 
 # print(model.summary())
 
-# # train_history = model.fit(x = datasets, y=all_labels, validation_split=0.3, epochs=10, batch_size=20)
+# train_history = model.fit(x = datasets, y=all_labels, validation_split=0.3, epochs=10, batch_size=20)
