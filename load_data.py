@@ -39,7 +39,7 @@ def load_data(data_path, labels, labels_classes):
         datasets = np.append(datasets, read_video_data(cap))
         labels_OneHot = np.append(labels_OneHot, labels_classes.index(path[0]))
     # datasets = datasets.reshape([datasets.shape[0], 30, 240, 320, 1])
-    labels_OneHot = np_utils.to_categorical(labels_OneHot)
+    labels_OneHot = np_utils.to_categorical(labels_OneHot, num_classes=21)
     
     return datasets, labels_OneHot
 
