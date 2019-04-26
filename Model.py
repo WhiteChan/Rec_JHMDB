@@ -85,5 +85,7 @@ with tf.Session() as sess:
             train_data = train_data / 255.
             print(np.shape(train_data))
             print(np.shape(train_label))
-            loss, acc = sess.run([loss_function, accuracy], feed_dict = {x: train_data, y: train_label})
-            print('batch ', i, 'acc = ', acc, ', loss = ', loss)
+            d_hidden = sess.run(D_Flat, feed_dict = {x: train_data})
+            print(np.shape(d_hidden))
+            # loss, acc = sess.run([loss_function, accuracy], feed_dict = {x: train_data, y: train_label})
+            # print('batch ', i, 'acc = ', acc, ', loss = ', loss)
