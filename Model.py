@@ -56,16 +56,34 @@ with tf.name_scope('evaluate_model'):
     correct_prediction = tf.equal(tf.argmax(y_predict, 1), tf.argmax(y, 1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, 'float32'))
 
-batch_size = 10
-train_x, train_y = load_data.load_data(data_path, labels, labels_classes)
-index = np.arange(train_x.shape[0])
+data_path = load_data.load_data_path()
+data_path = np.array(data_path)
+labels = data_path[:, 0]
+
+labels_classes = []
+for e in labels:
+    if e not in labels_classes:
+        labels_classes.append(e)
+
+batch_size = 24
+index = np.arange(928)
 np.random.shuffle(index)
-train_x = train_x[index, :, :, :, :]
-train_y = train_y[index]
+# train_data, train_label = load_data.load_data(data_path[index[0: batch_size], :], labels, labels_classes)
+# train_data = train_data.reshape([24, 30, 240, 320, 1])
+# print(np.shape(train_data))
+# print(np.shape(train_label))
+# train_label = labels[index[0: 696], :]
+# test_data = datas[index[696:], :, :, :, :]
+# test_label = labels[index[696: ], :]
 
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     for epoch in range(10):
-        for i in range(93):
-            loss, acc = sess.run([loss_function, accuracy], feed_dict = {x: train_x[i * batch_size: i * batch_size + batch_size], y: train_y[i * batch_size: i * batch_size + batch_size]})
+        for i in range(29):
+            train_data, train_label = load_data.load_data(data_path[index[i * batch_size: (i + 1) * batch_size], :], labels, labels_classes)
+            train_data = train_data.reshape([24, 30, 240, 320, 1])
+            train_data = train_data / 255.
+            print(np.shape(train_data))
+            print(np.shape(train_label))
+            loss, acc = sess.run([loss_function, accuracy], feed_dict = {x: train_data, y: train_label})
             print('batch ', i, 'acc = ', acc, ', loss = ', loss)
