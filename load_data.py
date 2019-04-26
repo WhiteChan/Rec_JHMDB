@@ -3,6 +3,7 @@ import tensorflow as tf
 import os 
 import cv2 as cv
 from keras.utils import np_utils
+import csv
 
 # 预处理
 def load_data_path():
@@ -27,20 +28,23 @@ def read_video_data(cap):
     return video_data
 
 def load_data(data_path, labels, labels_classes):
-    datasets = np.array([], dtype=np.float)
-    labels_OneHot = np.array([], dtype=np.float)
+    video_labels = []
     i = 0
+    data_out = open('data.csv', 'a', newline='')
+    label_out = open('label.csv', 'a', newline='')
+    data_csv_write = csv.writer(data_out, dialect='excel')
+    label_csv_write = csv.writer(label_out, dialect='excel')
     for path in data_path:
         filename = 'data/' + path[0] + '/' + path[1]
         print('load data from: ', filename, i)
         i = i + 1
-        cap = cv.VideoCapture(filename)        
-        datasets = np.append(datasets, read_video_data(cap))
-        labels_OneHot = np.append(labels_OneHot, labels_classes.index(path[0]))
-    datasets = datasets.reshape([datasets.shape[0], 30, 240, 320, 1])
-    labels_OneHot = np_utils.to_categorical(labels_OneHot)
-    
-    return datasets, labels_OneHot
+        cap = cv.VideoCapture(filename)
+        img_data = read_video_data(cap)
+        img_data = np.reshape(img_data, newshape=(30, 240 * 320))
+        for k in range(30):
+            data_csv_write.writerow(img_data[k])
+        video_labels.append(labels_classes.index(path[0]))
+    label_csv_write.writerow(video_labels)
 
 data_path = load_data_path()
 data_path = np.array(data_path)
@@ -50,7 +54,7 @@ labels_classes = []
 for e in labels:
     if e not in labels_classes:
         labels_classes.append(e)
-
+    
 load_data(data_path, labels, labels_classes)
 
 # datasets, all_labels = load_data(data_path, labels, labels_classes)
