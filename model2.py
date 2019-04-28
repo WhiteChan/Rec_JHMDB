@@ -104,7 +104,7 @@ with tf.Session() as sess:
             train_data = train_data.reshape([24, 30, 240, 320, 1])
             train_data = train_data / 255.
 
-            abcde = sess.run(V_Hidden, feed_dict={x: train_data})
+            abcde = sess.run(y_predict, feed_dict={x: train_data})
             print(np.shape(abcde))
             break
             
