@@ -41,20 +41,11 @@ with tf.name_scope('C2_Conv'):
 with tf.name_scope('C2_Pool'):
     C2_Pool = max_pool_2x2(C2_Conv)
 
-with tf.name_scope('C3_Conv'):
-    W2 = weight([5, 5, 8, 16])
-    b2 = bias([16])
-    Conv3 = conv2d(C2_Pool, W2) + b2
-    C3_Conv = tf.nn.relu(Conv2)
-
-with tf.name_scope('C2_Pool'):
-    C3_Pool = max_pool_2x2(C3_Conv)
-
 with tf.name_scope('D_Flat'):
-    D_Flat = tf.reshape(C3_Pool, [-1, 19200])
+    D_Flat = tf.reshape(C2_Pool, [-1, 38400])
 
 with tf.name_scope('Hidden_Layer1'):
-    W3 = weight([19200, 1000])
+    W3 = weight([38400, 1000])
     b3 = bias([1000])
     D_Hidden1 = tf.nn.relu(tf.matmul(D_Flat, W3) + b3)
 
