@@ -114,7 +114,7 @@ with tf.Session() as sess:
             train_data = train_data / 255.
 
             logist_ = sess.run(y_predict, feed_dict={x: train_data})
-            print(np.shape(logits_))
+            print(np.shape(logist_))
             
             sess.run(optimizer, feed_dict = {x: train_data, y: train_label})
             train_loss, train_acc = sess.run([loss, accuracy], feed_dict = {x: train_data, y: train_label})
