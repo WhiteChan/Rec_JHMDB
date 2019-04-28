@@ -45,7 +45,7 @@ with tf.name_scope('C3_Conv'):
     W3 = weight([5, 5, 8, 16])
     b3 = bias([16])
     Conv3 = conv2d(C2_Pool, W3) + b3
-    C3_Conv = tf.nn.relu(Conv2)
+    C3_Conv = tf.nn.relu(Conv3)
 
 with tf.name_scope('C3_Pool'):
     C3_Pool = max_pool_2x2(C3_Conv)
