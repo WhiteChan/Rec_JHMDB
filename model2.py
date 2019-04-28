@@ -25,7 +25,7 @@ x = tf.placeholder('float32', shape=[None, 30, 240, 320, 1])
 with tf.name_scope('C1_Conv'):
     W1 = weight([5, 5, 1, 4])
     b1 = bias([4])
-    x = x.reshape([-1, 240, 320, 1])
+    x = tf.reshape(x, [-1, 240, 320, 1])
     Conv1 = conv2d(x, W1) + b1
     C1_Conv = tf.nn.relu(Conv1)
 
@@ -60,7 +60,7 @@ with tf.name_scope('Hidden_Layer3'):
     D_Hidden3 = tf.nn.relu(tf.matmul(D_Hidden2, W5) + b5)
 
 with tf.name_scope('Output_Layer'):
-    V_Hidden = D_Hidden3.reshape([-1, 30])
+    V_Hidden = tf.reshape(D_Hidden3, [-1, 30])
     W6 = weight([30, 21])
     b6 = bias([21])
     y_predict = tf.nn.softmax(tf.matmul(V_Hidden, W6) + b6)
