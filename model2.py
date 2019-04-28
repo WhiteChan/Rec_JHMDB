@@ -115,7 +115,6 @@ with tf.Session() as sess:
 
             # logist_ = sess.run(C3_Pool, feed_dict={x: train_data})
             # print(np.shape(logist_), i)
-            print(epoch, i)
             
             sess.run(optimizer, feed_dict = {x: train_data, y: train_label})
             train_loss, train_acc = sess.run([loss, accuracy], feed_dict = {x: train_data, y: train_label})
