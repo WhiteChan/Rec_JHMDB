@@ -120,6 +120,8 @@ with tf.Session() as sess:
             sess.run(optimizer, feed_dict = {x: train_data, y: train_label})
             # train_loss, train_acc = sess.run([loss, accuracy], feed_dict = {x: train_data, y: train_label})
             # print('Epoch ', epoch + 1, 'Batch', i, 'train_acc = ', train_acc, ', train_loss = ', train_loss)
+        import os 
+        os.environ["CUDA_VISIBLE_DEVICES"] = ""
         loss, acc = sess.run([loss, accuracy], feed_dict = {x: test_data1, y: test_label1})
         print('Epoch ', epoch + 1, 'acc1 = ', acc, ', loss1 = ', loss)
         loss, acc = sess.run([loss, accuracy], feed_dict = {x: test_data2, y: test_label2})
