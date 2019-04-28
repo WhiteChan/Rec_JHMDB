@@ -113,7 +113,7 @@ with tf.Session() as sess:
             train_data = train_data.reshape([24, 30, 240, 320, 1])
             train_data = train_data / 255.
 
-            logist_ = sess.run(C2_Pool, feed_dict={x: train_data})
+            logist_ = sess.run(C3_Pool, feed_dict={x: train_data})
             print(np.shape(logist_))
             break
             
