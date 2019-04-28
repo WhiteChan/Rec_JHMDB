@@ -103,10 +103,15 @@ with tf.Session() as sess:
             train_data, train_label = load_data.load_data(data_path[index[i * batch_size: (i + 1) * batch_size], :], labels, labels_classes)
             train_data = train_data.reshape([24, 30, 240, 320, 1])
             train_data = train_data / 255.
+
+            abcde = sess.run(V_Hidden, feed_dict={x: train_data})
+            print(np.shape(abcde))
+            break
             
             sess.run(optimizer, feed_dict = {x: train_data, y: train_label})
             train_loss, train_acc = sess.run([loss, accuracy], feed_dict = {x: train_data, y: train_label})
             print('Epoch ', epoch + 1, 'Batch', i, 'train_acc = ', train_acc, ', train_loss = ', train_loss)
+        break
         loss, acc = sess.run([loss, accuracy], feed_dict = {x: test_data1, y: test_label1})
         print('Epoch ', epoch + 1, 'acc1 = ', acc, ', loss1 = ', loss)
         loss, acc = sess.run([loss, accuracy], feed_dict = {x: test_data2, y: test_label2})
