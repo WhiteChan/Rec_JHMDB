@@ -69,7 +69,7 @@ with tf.name_scope('C3_Pool'):
     C5_Pool = max_pool_2x2(C5_Conv)
 
 with tf.name_scope('D_Flat'):
-    D_Flat = tf.reshape(C3_Pool, [-1, 5120])
+    D_Flat = tf.reshape(C5_Pool, [-1, 5120])
 
 with tf.name_scope('Hidden_Layer1'):
     W4 = weight([5120, 1000])
