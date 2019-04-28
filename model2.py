@@ -118,14 +118,12 @@ with tf.Session() as sess:
             print(epoch, i)
             
             sess.run(optimizer, feed_dict = {x: train_data, y: train_label})
-            # train_loss, train_acc = sess.run([loss, accuracy], feed_dict = {x: train_data, y: train_label})
-            # print('Epoch ', epoch + 1, 'Batch', i, 'train_acc = ', train_acc, ', train_loss = ', train_loss)
-        import os 
-        os.environ["CUDA_VISIBLE_DEVICES"] = ""
-        loss, acc = sess.run([loss, accuracy], feed_dict = {x: test_data1, y: test_label1})
-        print('Epoch ', epoch + 1, 'acc1 = ', acc, ', loss1 = ', loss)
-        loss, acc = sess.run([loss, accuracy], feed_dict = {x: test_data2, y: test_label2})
-        print('Epoch ', epoch + 1, 'acc2 = ', acc, ', loss2 = ', loss)
+            train_loss, train_acc = sess.run([loss, accuracy], feed_dict = {x: train_data, y: train_label})
+            print('Epoch ', epoch + 1, 'Batch', i, 'train_acc = ', train_acc, ', train_loss = ', train_loss)
+        # loss, acc = sess.run([loss, accuracy], feed_dict = {x: test_data1, y: test_label1})
+        # print('Epoch ', epoch + 1, 'acc1 = ', acc, ', loss1 = ', loss)
+        # loss, acc = sess.run([loss, accuracy], feed_dict = {x: test_data2, y: test_label2})
+        # print('Epoch ', epoch + 1, 'acc2 = ', acc, ', loss2 = ', loss)
         # test_loss1, test_acc1 = sess.run([loss_function, accuracy], feed_dict = {x: test_data1, y: test_label1})
         # print('Epoch ', epoch + 1, ': test1_loss = ', test_loss1, 'test1_acc = ', test_acc1)
         # test_loss2, test_acc2 = sess.run([loss_function, accuracy], feed_dict = {x: test_data2, y: test_label2})
