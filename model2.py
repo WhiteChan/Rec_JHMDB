@@ -50,29 +50,11 @@ with tf.name_scope('C3_Conv'):
 with tf.name_scope('C3_Pool'):
     C3_Pool = max_pool_2x2(C3_Conv)
 
-with tf.name_scope('C4_Conv'):
-    W31 = weight([5, 5, 16, 32])
-    b31 = bias([32])
-    Conv4 = conv2d(C3_Pool, W31) + b31
-    C4_Conv = tf.nn.relu(Conv4)
-
-with tf.name_scope('C4_Pool'):
-    C4_Pool = max_pool_2x2(C4_Conv)
-
-with tf.name_scope('C5_Conv'):
-    W32 = weight([5, 5, 32, 64])
-    b32 = bias([64])
-    Conv5 = conv2d(C4_Pool, W32) + b32
-    C5_Conv = tf.nn.relu(Conv5)
-
-with tf.name_scope('C3_Pool'):
-    C5_Pool = max_pool_2x2(C5_Conv)
-
 with tf.name_scope('D_Flat'):
-    D_Flat = tf.reshape(C5_Pool, [-1, 5120])
+    D_Flat = tf.reshape(C3_Pool, [-1, 19200])
 
 with tf.name_scope('Hidden_Layer1'):
-    W4 = weight([5120, 1000])
+    W4 = weight([19200, 1000])
     b4 = bias([1000])
     D_Hidden1 = tf.nn.relu(tf.matmul(D_Flat, W4) + b4)
 
@@ -133,6 +115,7 @@ with tf.Session() as sess:
 
             # logist_ = sess.run(C3_Pool, feed_dict={x: train_data})
             # print(np.shape(logist_), i)
+            print(epoch, i)
             
             sess.run(optimizer, feed_dict = {x: train_data, y: train_label})
             train_loss, train_acc = sess.run([loss, accuracy], feed_dict = {x: train_data, y: train_label})
