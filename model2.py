@@ -47,7 +47,7 @@ with tf.name_scope('C3_Conv'):
     Conv3 = conv2d(C2_Pool, W21) + b21
     C3_Conv = tf.nn.relu(Conv2)
 
-with tf.name_scope('C2_Pool'):
+with tf.name_scope('C3_Pool'):
     C3_Pool = max_pool_2x2(C3_Conv)
 
 with tf.name_scope('D_Flat'):
@@ -113,8 +113,9 @@ with tf.Session() as sess:
             train_data = train_data.reshape([24, 30, 240, 320, 1])
             train_data = train_data / 255.
 
-            logist_ = sess.run(y_predict, feed_dict={x: train_data})
+            logist_ = sess.run(C3_Pool, feed_dict={x: train_data})
             print(np.shape(logist_))
+            break
             
             sess.run(optimizer, feed_dict = {x: train_data, y: train_label})
             train_loss, train_acc = sess.run([loss, accuracy], feed_dict = {x: train_data, y: train_label})
