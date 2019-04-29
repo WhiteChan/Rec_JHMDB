@@ -20,10 +20,10 @@ def conv2d(x, W):
 def max_pool_2x2(x):
     return tf.nn.max_pool(x, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
 
-x = tf.placeholder('float32', shape=[None, 30, 240, 320, 1])
+x = tf.placeholder('float32', shape=[None, 30, 240, 320, 3])
 
 with tf.name_scope('C1_Conv'):
-    W1 = weight([5, 5, 1, 4])
+    W1 = weight([5, 5, 3, 4])
     b1 = bias([4])
     x_reshape = tf.reshape(x, [-1, 240, 320, 1])
     Conv1 = conv2d(x_reshape, W1) + b1
@@ -111,6 +111,7 @@ with tf.Session() as sess:
         for i in range(29):
             train_data, train_label = load_data.load_data(data_path[index[i * batch_size: (i + 1) * batch_size], :], labels, labels_classes)
             train_data = train_data / 255.
+            print(train_data.shape)
 
             # logist_ = sess.run(C3_Pool, feed_dict={x: train_data})
             # print(np.shape(logist_), i)
