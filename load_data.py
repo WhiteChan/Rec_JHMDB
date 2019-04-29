@@ -54,25 +54,6 @@ for e in labels:
     if e not in labels_classes:
         labels_classes.append(e)
 
-index = np.arange(928)
-# np.random.shuffle(index)
-
-train_data, train_label = load_data(data_path[index[:60]], labels, labels_classes)
-print(train_data.shape)
-# train_data = train_data.reshape([-1, 30, 240, 320, 3])
-
-# print(np.shape(train_data[0][0]))
-train_data = train_data / 255.
-
-
-for i in range(60):
-    for j in range(30):
-        # print(train_data[i][j])
-        # frame = cv.UMat(train_data[i][j])
-        cv.imshow('' + labels[index[i]], train_data[i][j])
-        cv.waitKey(10)
-    cv.destroyAllWindows()
-
     
 # load_data(data_path, labels, labels_classes)
 
