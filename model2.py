@@ -110,7 +110,6 @@ with tf.Session() as sess:
     for epoch in range(1000):
         for i in range(29):
             train_data, train_label = load_data.load_data(data_path[index[i * batch_size: (i + 1) * batch_size], :], labels, labels_classes)
-            train_data = train_data.reshape([24, 30, 240, 320, 1])
             train_data = train_data / 255.
 
             # logist_ = sess.run(C3_Pool, feed_dict={x: train_data})
