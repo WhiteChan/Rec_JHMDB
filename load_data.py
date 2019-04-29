@@ -21,7 +21,7 @@ def read_video_data(cap):
     for i in range(30):
         ret, frame = cap.read()
         if ret:
-            # frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+            frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
             video_data.append(frame)
         else:
             video_data.append(np.zeros(shape=(240, 320, 3)))
