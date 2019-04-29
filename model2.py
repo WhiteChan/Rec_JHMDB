@@ -77,7 +77,7 @@ with tf.name_scope('Output_Layer'):
 with tf.name_scope('optimizer'):
     y = tf.placeholder('float32', shape=[None, 21])
     loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=y_predict, labels=y))
-    optimizer = tf.train.AdamOptimizer(1e-8).minimize(loss)
+    optimizer = tf.train.AdamOptimizer(1e-4).minimize(loss)
 
 with tf.name_scope('evaluate_model'):
     correct_prediction = tf.equal(tf.argmax(y_predict, 1), tf.argmax(y, 1))
