@@ -111,7 +111,6 @@ with tf.Session() as sess:
         for i in range(58):
             train_data, train_label = load_data.load_data(data_path[index[i * batch_size: (i + 1) * batch_size], :], labels, labels_classes)
             train_data = train_data / 255.
-            print(train_data.shape)
 
             # logist_ = sess.run(C3_Pool, feed_dict={x: train_data})
             # print(np.shape(logist_), i)
