@@ -93,7 +93,7 @@ for e in labels:
     if e not in labels_classes:
         labels_classes.append(e)
 
-batch_size = 24
+batch_size = 12
 index = np.arange(928)
 np.random.shuffle(index)
 
@@ -108,7 +108,7 @@ np.random.shuffle(index)
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     for epoch in range(1000):
-        for i in range(29):
+        for i in range(58):
             train_data, train_label = load_data.load_data(data_path[index[i * batch_size: (i + 1) * batch_size], :], labels, labels_classes)
             train_data = train_data / 255.
             print(train_data.shape)
