@@ -14,11 +14,11 @@ def conv3d(x, W):
 def max_pool_3x3(x):
     return tf.nn.max_pool3d(x, ksize=[1, 2, 2, 2, 1], strides=[1, 2, 2, 2, 1], padding='SAME')
 
-x = tf.placeholder("float32", shape=[None, 30, 240, 320, 1])
+x = tf.placeholder("float32", shape=[None, 30, 240, 320, 3])
 
 with tf.name_scope('C1_Conv'):
-    W1 = weight([3, 3, 3, 1, 2])
-    b1 = bias([2])
+    W1 = weight([3, 3, 3, 3, 32])
+    b1 = bias([32])
     Conv1 = conv3d(x, W1) + b1
     C1_Conv = tf.nn.relu(Conv1)
 
@@ -26,8 +26,8 @@ with tf.name_scope('C1_Pool'):
     C1_Pool = max_pool_3x3(C1_Conv)
 
 with tf.name_scope('C2_Conv'):
-    W2 = weight([3, 3, 3, 2, 4])
-    b2 = bias([4])
+    W2 = weight([3, 3, 3, 2, 32])
+    b2 = bias([32])
     Conv2 = conv3d(C1_Pool, W2) + b2
     C2_Conv = tf.nn.relu(Conv2)
 
@@ -35,8 +35,8 @@ with tf.name_scope('C2_Pool'):
     C2_Pool = max_pool_3x3(C2_Conv)
 
 with tf.name_scope('C3_Conv'):
-    W3 = weight([3, 3, 3, 4, 8])
-    b3 = bias([8])
+    W3 = weight([3, 3, 3, 4, 64])
+    b3 = bias([64])
     Conv3 = conv3d(C2_Pool, W3) + b3
     C3_Conv = tf.nn.relu(Conv3)
 
@@ -44,8 +44,8 @@ with tf.name_scope('C3_Pool'):
     C3_Pool = max_pool_3x3(C3_Conv)
 
 with tf.name_scope('C4_Conv'):
-    W4 = weight([3, 3, 3, 8, 16])
-    b4 = bias([16])
+    W4 = weight([3, 3, 3, 8, 128])
+    b4 = bias([128])
     Conv4 = conv3d(C3_Pool, W4) + b4
     C4_Conv = tf.nn.relu(Conv4)
 
