@@ -53,7 +53,7 @@ with tf.name_scope('C3_Pool'):
 # ***************************
 with tf.name_scope('C4_Conv'):
     W31 = weight([5, 5, 256, 512])
-    b3 = bias([512])
+    b31 = bias([512])
     Conv4 = conv2d(C3_Pool, W31) + b31
     C4_Conv = tf.nn.relu(Conv4)
 
