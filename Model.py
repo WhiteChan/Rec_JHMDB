@@ -120,43 +120,70 @@ for e in labels:
     if e not in labels_classes:
         labels_classes.append(e)
 
-batch_size = 24
+batch_size = 6
 index = np.arange(928)
 np.random.shuffle(index)
-# train_data, train_label = load_data.load_data(data_path[index[0: batch_size], :], labels, labels_classes)
-# train_data = train_data.reshape([24, 30, 240, 320, 1])
-# print(np.shape(train_data))
-# print(np.shape(train_label))
-# train_label = labels[index[0: 696], :]
-# test_data = datas[index[696:], :, :, :, :]
-# test_label = labels[index[696: ], :]
 
+# test_data1, test_label1 = load_data.load_data(data_path[index[696: 746], :], labels, labels_classes)
+# test_data1 = test_data1.reshape([-1, 30, 240, 320, 1])
+# test_data1 = test_data1 / 255.
 
-
-test_data1, test_label1 = load_data.load_data(data_path[index[696: 746], :], labels, labels_classes)
-test_data1 = test_data1.reshape([-1, 30, 240, 320, 1])
-test_data1 = test_data1 / 255.
-
-test_data2, test_label2 = load_data.load_data(data_path[index[746: 796], :], labels, labels_classes)
-test_data2 = test_data2.reshape([-1, 30, 240, 320, 1])
-test_data2 = test_data2 / 255.
+# test_data2, test_label2 = load_data.load_data(data_path[index[746: 796], :], labels, labels_classes)
+# test_data2 = test_data2.reshape([-1, 30, 240, 320, 1])
+# test_data2 = test_data2 / 255.
 
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     for epoch in range(1000):
-        for i in range(29):
+        for i in range(116):
             train_data, train_label = load_data.load_data(data_path[index[i * batch_size: (i + 1) * batch_size], :], labels, labels_classes)
-            train_data = train_data.reshape([24, 30, 240, 320, 1])
             train_data = train_data / 255.
-            
+
+            # logist_ = sess.run(C3_Pool, feed_dict={x: train_data})
+            # print(np.shape(logist_), i)
+            # break
+
             sess.run(optimizer, feed_dict = {x: train_data, y: train_label})
-            train_loss, train_acc = sess.run([loss_function, accuracy], feed_dict = {x: train_data, y: train_label})
+            train_loss, train_acc = sess.run([loss, accuracy], feed_dict = {x: train_data, y: train_label})
             print('Epoch ', epoch + 1, 'Batch', i, 'train_acc = ', train_acc, ', train_loss = ', train_loss)
-        loss, acc = sess.run([loss_function, accuracy], feed_dict = {x: test_data1, y: test_label1})
-        print('Epoch ', epoch + 1, 'acc1 = ', acc, ', loss1 = ', loss)
-        loss, acc = sess.run([loss_function, accuracy], feed_dict = {x: test_data2, y: test_label2})
-        print('Epoch ', epoch + 1, 'acc2 = ', acc, ', loss2 = ', loss)
-        # test_loss1, test_acc1 = sess.run([loss_function, accuracy], feed_dict = {x: test_data1, y: test_label1})
-        # print('Epoch ', epoch + 1, ': test1_loss = ', test_loss1, 'test1_acc = ', test_acc1)
-        # test_loss2, test_acc2 = sess.run([loss_function, accuracy], feed_dict = {x: test_data2, y: test_label2})
-        # print('Epoch ', epoch + 1, ': test1_loss = ', test_loss2, 'test1_acc = ', test_acc2)
+
+# batch_size = 24
+# index = np.arange(928)
+# np.random.shuffle(index)
+# # train_data, train_label = load_data.load_data(data_path[index[0: batch_size], :], labels, labels_classes)
+# # train_data = train_data.reshape([24, 30, 240, 320, 1])
+# # print(np.shape(train_data))
+# # print(np.shape(train_label))
+# # train_label = labels[index[0: 696], :]
+# # test_data = datas[index[696:], :, :, :, :]
+# # test_label = labels[index[696: ], :]
+
+
+
+# test_data1, test_label1 = load_data.load_data(data_path[index[696: 746], :], labels, labels_classes)
+# test_data1 = test_data1.reshape([-1, 30, 240, 320, 1])
+# test_data1 = test_data1 / 255.
+
+# test_data2, test_label2 = load_data.load_data(data_path[index[746: 796], :], labels, labels_classes)
+# test_data2 = test_data2.reshape([-1, 30, 240, 320, 1])
+# test_data2 = test_data2 / 255.
+
+# with tf.Session() as sess:
+#     sess.run(tf.global_variables_initializer())
+#     for epoch in range(1000):
+#         for i in range(29):
+#             train_data, train_label = load_data.load_data(data_path[index[i * batch_size: (i + 1) * batch_size], :], labels, labels_classes)
+#             train_data = train_data.reshape([24, 30, 240, 320, 1])
+#             train_data = train_data / 255.
+            
+#             sess.run(optimizer, feed_dict = {x: train_data, y: train_label})
+#             train_loss, train_acc = sess.run([loss_function, accuracy], feed_dict = {x: train_data, y: train_label})
+#             print('Epoch ', epoch + 1, 'Batch', i, 'train_acc = ', train_acc, ', train_loss = ', train_loss)
+#         loss, acc = sess.run([loss_function, accuracy], feed_dict = {x: test_data1, y: test_label1})
+#         print('Epoch ', epoch + 1, 'acc1 = ', acc, ', loss1 = ', loss)
+#         loss, acc = sess.run([loss_function, accuracy], feed_dict = {x: test_data2, y: test_label2})
+#         print('Epoch ', epoch + 1, 'acc2 = ', acc, ', loss2 = ', loss)
+#         # test_loss1, test_acc1 = sess.run([loss_function, accuracy], feed_dict = {x: test_data1, y: test_label1})
+#         # print('Epoch ', epoch + 1, ': test1_loss = ', test_loss1, 'test1_acc = ', test_acc1)
+#         # test_loss2, test_acc2 = sess.run([loss_function, accuracy], feed_dict = {x: test_data2, y: test_label2})
+#         # print('Epoch ', epoch + 1, ': test1_loss = ', test_loss2, 'test1_acc = ', test_acc2)
