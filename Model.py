@@ -94,11 +94,20 @@ with tf.name_scope('C6b_Conv'):
 with tf.name_scope('C6_Pool'):
     C6_Pool = max_pool_3x3(C6b_Conv)
 
+with tf.name_scope('C7_Conv'):
+    W7 = weight([3, 3, 3, 1024, 1024])
+    b7 = bias([1024])
+    Conv7 = conv3d(C6_Pool, W7) + b7
+    C7_Conv = tf.nn.relu(Conv7)
+
+with tf.name_scope('C7_Pool'):
+    C7_Pool = max_pool_3x3(C7_Conv)
+
 with tf.name_scope('D_Flat'):
-    D_Flat = tf.reshape(C6_Pool, [-1, 20480])
+    D_Flat = tf.reshape(C7_Pool, [-1, 6144])
 
 with tf.name_scope('Hidden_Layer1'):
-    W5 = weight([20480, 100])
+    W5 = weight([6144, 100])
     b5 = bias([100])
     D_Hidden1 = tf.nn.relu(tf.matmul(D_Flat, W5) + b5)
 
@@ -147,20 +156,26 @@ np.random.shuffle(index)
 # test_data2 = test_data2.reshape([-1, 30, 240, 320, 1])
 # test_data2 = test_data2 / 255.
 
-with tf.Session() as sess:
-    sess.run(tf.global_variables_initializer())
-    for epoch in range(1000):
-        for i in range(232):
-            train_data, train_label = load_data.load_data(data_path[index[i * batch_size: (i + 1) * batch_size], :], labels, labels_classes)
-            train_data = train_data / 255.
 
-            # logist_ = sess.run(C3_Pool, feed_dict={x: train_data})
-            # print(np.shape(logist_), i)
-            # break
+sess = tf.Session()
 
-            sess.run(optimizer, feed_dict = {x: train_data, y: train_label})
-            train_loss, train_acc = sess.run([loss, accuracy], feed_dict = {x: train_data, y: train_label})
-            print('Epoch ', epoch + 1, 'Batch', i, 'train_acc = ', train_acc, ', train_loss = ', train_loss)
+merged = tf.summary.merge_all()
+train_writer = tf.summary.FileWriter('log/CNN', sess.graph)
+
+# with tf.Session() as sess:
+#     sess.run(tf.global_variables_initializer())
+#     for epoch in range(1000):
+#         for i in range(232):
+#             train_data, train_label = load_data.load_data(data_path[index[i * batch_size: (i + 1) * batch_size], :], labels, labels_classes)
+#             train_data = train_data / 255.
+
+#             # logist_ = sess.run(C3_Pool, feed_dict={x: train_data})
+#             # print(np.shape(logist_), i)
+#             # break
+
+#             sess.run(optimizer, feed_dict = {x: train_data, y: train_label})
+#             train_loss, train_acc = sess.run([loss, accuracy], feed_dict = {x: train_data, y: train_label})
+#             print('Epoch ', epoch + 1, 'Batch', i, 'train_acc = ', train_acc, ', train_loss = ', train_loss)
 
 # batch_size = 24
 # index = np.arange(928)
