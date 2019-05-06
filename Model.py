@@ -12,7 +12,7 @@ def conv3d(x, W):
     return tf.nn.conv3d(x, W, strides=[1, 1, 1, 1, 1], padding='SAME')
 
 def max_pool_3x3(x):
-    return tf.nn.max_pool3d(x, ksize=[1, 2, 2, 2, 1], strides=[1, 1, 2, 2, 1], padding='SAME')
+    return tf.nn.max_pool3d(x, ksize=[1, 2, 2, 2, 1], strides=[1, 2, 2, 2, 1], padding='SAME')
 
 x = tf.placeholder("float32", shape=[None, 30, 240, 320, 3])
 
@@ -23,7 +23,7 @@ with tf.name_scope('C1_Conv'):
     C1_Conv = tf.nn.relu(Conv1)
 
 with tf.name_scope('C1_Pool'):
-    C1_Pool = tf.nn.max_pool3d(C1_Conv, ksize=[1, 2, 2, 2, 1], strides=[1, 2, 2, 2, 1], padding='SAME')
+    C1_Pool = tf.nn.max_pool3d(C1_Conv, ksize=[1, 1, 2, 2, 1], strides=[1, 1, 2, 2, 1], padding='SAME')
 
 with tf.name_scope('C2_Conv'):
     W2 = weight([3, 3, 3, 64, 128])
@@ -79,11 +79,26 @@ with tf.name_scope('C5b_Conv'):
 with tf.name_scope('C5_Pool'):
     C5_Pool = max_pool_3x3(C5b_Conv)
 
+with tf.name_scope('C6a_Conv'):
+    W6a = weight([3, 3, 3, 512, 1024])
+    b6a = bias([1024])
+    Conv6a = conv3d(C5_Pool, W6a) + b6a
+    C6a_Conv = tf.nn.relu(Conv6a)
+
+with tf.name_scope('C6b_Conv'):
+    W6b = weight([3, 3, 3, 1024, 1024])
+    b6b = bias([1024])
+    Conv6b = conv3d(C6a_Conv, W6b) + b6b
+    C6b_Conv = tf.nn.relu(Conv6b)
+
+with tf.name_scope('C6_Pool'):
+    C6_Pool = max_pool_3x3(C6b_Conv)
+
 with tf.name_scope('D_Flat'):
-    D_Flat = tf.reshape(C5_Pool, [-1, 81920])
+    D_Flat = tf.reshape(C6_Pool, [-1, 20480])
 
 with tf.name_scope('Hidden_Layer1'):
-    W5 = weight([81920, 3000])
+    W5 = weight([20480, 3000])
     b5 = bias([3000])
     D_Hidden1 = tf.nn.relu(tf.matmul(D_Flat, W5) + b5)
 
@@ -104,8 +119,8 @@ with tf.name_scope('Output_Layer'):
 
 with tf.name_scope('optimizer'):
     y = tf.placeholder("float32", shape=[None, 21])
-    loss_function = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=y_predict, labels=y))
-    optimizer = tf.train.AdamOptimizer(1e-8).minimize(loss_function)
+    loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=y_predict, labels=y))
+    optimizer = tf.train.AdamOptimizer(1e-8).minimize(loss)
 
 with tf.name_scope('evaluate_model'):
     correct_prediction = tf.equal(tf.argmax(y_predict, 1), tf.argmax(y, 1))
