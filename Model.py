@@ -12,51 +12,78 @@ def conv3d(x, W):
     return tf.nn.conv3d(x, W, strides=[1, 1, 1, 1, 1], padding='SAME')
 
 def max_pool_3x3(x):
-    return tf.nn.max_pool3d(x, ksize=[1, 2, 2, 2, 1], strides=[1, 2, 2, 2, 1], padding='SAME')
+    return tf.nn.max_pool3d(x, ksize=[1, 2, 2, 2, 1], strides=[1, 1, 2, 2, 1], padding='SAME')
 
 x = tf.placeholder("float32", shape=[None, 30, 240, 320, 3])
 
 with tf.name_scope('C1_Conv'):
-    W1 = weight([3, 3, 3, 3, 32])
-    b1 = bias([32])
+    W1 = weight([3, 3, 3, 3, 64])
+    b1 = bias([64])
     Conv1 = conv3d(x, W1) + b1
     C1_Conv = tf.nn.relu(Conv1)
 
 with tf.name_scope('C1_Pool'):
-    C1_Pool = max_pool_3x3(C1_Conv)
+    C1_Pool = tf.nn.max_pool3d(C1_Conv, ksize=[1, 2, 2, 2, 1], strides=[1, 2, 2, 2, 1], padding='SAME')
 
 with tf.name_scope('C2_Conv'):
-    W2 = weight([3, 3, 3, 2, 32])
-    b2 = bias([32])
+    W2 = weight([3, 3, 3, 64, 128])
+    b2 = bias([128])
     Conv2 = conv3d(C1_Pool, W2) + b2
     C2_Conv = tf.nn.relu(Conv2)
 
 with tf.name_scope('C2_Pool'):
     C2_Pool = max_pool_3x3(C2_Conv)
 
-with tf.name_scope('C3_Conv'):
-    W3 = weight([3, 3, 3, 4, 64])
-    b3 = bias([64])
-    Conv3 = conv3d(C2_Pool, W3) + b3
-    C3_Conv = tf.nn.relu(Conv3)
+with tf.name_scope('C3a_Conv'):
+    W3a = weight([3, 3, 3, 128, 256])
+    b3a = bias([256])
+    Conv3a = conv3d(C2_Pool, W3a) + b3a
+    C3a_Conv = tf.nn.relu(Conv3a)
+
+with tf.name_scope('C3b_Conv'):
+    W3b = weight([3, 3, 3, 256, 256])
+    b3b = bias([256])
+    Conv3b = conv3d(C3a_Conv, W3b) + b3b
+    C3b_Conv = tf.nn.relu(Conv3b)
 
 with tf.name_scope('C3_Pool'):
-    C3_Pool = max_pool_3x3(C3_Conv)
+    C3_Pool = max_pool_3x3(C3b_Conv)
 
-with tf.name_scope('C4_Conv'):
-    W4 = weight([3, 3, 3, 8, 128])
-    b4 = bias([128])
-    Conv4 = conv3d(C3_Pool, W4) + b4
-    C4_Conv = tf.nn.relu(Conv4)
+with tf.name_scope('C4a_Conv'):
+    W4a = weight([3, 3, 3, 256, 512])
+    b4a = bias([512])
+    Conv4a = conv3d(C3_Pool, W4a) + b4a
+    C4a_Conv = tf.nn.relu(Conv4a)
+
+with tf.name_scope('C4b_Conv'):
+    W4b = weight([3, 3, 3, 512, 512])
+    b4b = bias([512])
+    Conv4b = conv3d(C4a_Conv, W4b) + b4b
+    C4b_Conv = tf.nn.relu(Conv4b)
 
 with tf.name_scope('C4_Pool'):
-    C4_Pool = max_pool_3x3(C4_Conv)
+    C4_Pool = max_pool_3x3(C4b_Conv)
+
+with tf.name_scope('C5a_Conv'):
+    W5a = weight([3, 3, 3, 512, 512])
+    b5a = bias([512])
+    Conv5a = conv3d(C4_Pool, W5a) + b5a
+    C5a_Conv = tf.nn.relu(Conv5a)
+
+with tf.name_scope('C5b_Conv'):
+    W5b = weight([3, 3, 3, 512, 512])
+    b5b = bias([512])
+    Conv5b = conv3d(C5a_Conv, W5b) + b5b
+    C5b_Conv = tf.nn.relu(Conv5b)
+
+with tf.name_scope('C5_Pool'):
+    C5_Pool = max_pool_3x3(C5b_Conv)
 
 with tf.name_scope('D_Flat'):
-    D_Flat = tf.reshape(C4_Pool, [-1, 9600])
+    D_Flat = tf.reshape(C5_Pool, [-1, 81920])
 
 with tf.name_scope('Hidden_Layer1'):
-    W5 = weight([9600, 3000])
+    W5 = weight([81920, 3000])
     b5 = bias([3000])
     D_Hidden1 = tf.nn.relu(tf.matmul(D_Flat, W5) + b5)
 
