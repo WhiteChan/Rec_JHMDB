@@ -157,25 +157,25 @@ np.random.shuffle(index)
 # test_data2 = test_data2 / 255.
 
 
-sess = tf.Session()
+# sess = tf.Session()
 
-merged = tf.summary.merge_all()
-train_writer = tf.summary.FileWriter('log/CNN', sess.graph)
+# merged = tf.summary.merge_all()
+# train_writer = tf.summary.FileWriter('log/CNN', sess.graph)
 
-# with tf.Session() as sess:
-#     sess.run(tf.global_variables_initializer())
-#     for epoch in range(1000):
-#         for i in range(232):
-#             train_data, train_label = load_data.load_data(data_path[index[i * batch_size: (i + 1) * batch_size], :], labels, labels_classes)
-#             train_data = train_data / 255.
+with tf.Session() as sess:
+    sess.run(tf.global_variables_initializer())
+    for epoch in range(1000):
+        for i in range(232):
+            train_data, train_label = load_data.load_data(data_path[index[i * batch_size: (i + 1) * batch_size], :], labels, labels_classes)
+            train_data = train_data / 255.
 
-#             # logist_ = sess.run(C3_Pool, feed_dict={x: train_data})
-#             # print(np.shape(logist_), i)
-#             # break
+            # logist_ = sess.run(C3_Pool, feed_dict={x: train_data})
+            # print(np.shape(logist_), i)
+            # break
 
-#             sess.run(optimizer, feed_dict = {x: train_data, y: train_label})
-#             train_loss, train_acc = sess.run([loss, accuracy], feed_dict = {x: train_data, y: train_label})
-#             print('Epoch ', epoch + 1, 'Batch', i, 'train_acc = ', train_acc, ', train_loss = ', train_loss)
+            sess.run(optimizer, feed_dict = {x: train_data, y: train_label})
+            train_loss, train_acc = sess.run([loss, accuracy], feed_dict = {x: train_data, y: train_label})
+            print('Epoch ', epoch + 1, 'Batch', i, 'train_acc = ', train_acc, ', train_loss = ', train_loss)
 
 # batch_size = 24
 # index = np.arange(928)
