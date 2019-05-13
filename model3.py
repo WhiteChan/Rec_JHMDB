@@ -61,6 +61,7 @@ index = np.arange(928)
 np.random.shuffle(index)
 
 train_data, train_label = load_data(data_path[index], labels, labels_classes)
+train_data = train_data / 255.
 
 # build model
 # model = Sequential()
