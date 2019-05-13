@@ -95,8 +95,10 @@ train_data, train_label = load_data(data_path[index], labels, labels_classes)
 base_model = InceptionV3(weights='imagenet', include_top=False)
 x = base_model.output
 x = GlobalAveragePooling2D()(x)
+x = Dropout(0.3)(x)
 
 x = Dense(1024, activation='relu')(x)
+x = Dropout(0.25)(x)
 
 predictions = Dense(21, activation='softmax')(x)
 
