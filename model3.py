@@ -137,7 +137,7 @@ early_stopper = EarlyStopping(patience=10)
 train_history = model.fit(x = train_data, y=train_label, validation_split=0.2, epochs=10, batch_size=20)
 
 for layer in model.layers[:172]:
-        layer.trainable = False
+    layer.trainable = False
 for layer in model.layers[172:]:
     layer.trainable = True
 
