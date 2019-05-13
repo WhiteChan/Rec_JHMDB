@@ -133,7 +133,7 @@ def plot_images_labels_prediction(images, labels, prediction, idx, num = 10):
 
 # plot_images_labels_prediction(train_data, train_label, '', idx=0, num=10)
 
-early_stopper = EarlyStopping(patience=10)
+early_stopper = EarlyStopping(patience=50)
 
 train_history = model.fit(x = train_data[:696], y=train_label[:696], validation_split=0.2, epochs=1000, batch_size=20, callbacks=[early_stopper])
 
