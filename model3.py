@@ -105,8 +105,10 @@ predictions = Dense(21, activation='softmax')(x)
 # this is the model we will train
 model = Model(inputs=base_model.input, outputs=predictions)
 
-for layer in base_model.layers:
+for layer in model.layers[:172]:
     layer.trainable = False
+for layer in model.layers[172:]:
+    layer.trainable = True
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
@@ -134,13 +136,4 @@ def plot_images_labels_prediction(images, labels, prediction, idx, num = 10):
 
 early_stopper = EarlyStopping(patience=10)
 
-train_history = model.fit(x = train_data, y=train_label, validation_split=0.2, epochs=10, batch_size=20)
-
-for layer in model.layers[:172]:
-    layer.trainable = False
-for layer in model.layers[172:]:
-    layer.trainable = True
-
-model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-
-train_history = model.fit(x = train_data, y=train_label, validation_split=0.2, epochs=1000, batch_size=20, callbacks=[early_stopper])
+train_history = model.fit(x = train_data, y=train_label, validation_split=0.2, epochs=10, batch_size=20, callbacks=[early_stopper])
