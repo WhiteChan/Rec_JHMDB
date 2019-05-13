@@ -141,4 +141,6 @@ for layer in model.layers[:172]:
 for layer in model.layers[172:]:
     layer.trainable = True
 
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+
 train_history = model.fit(x = train_data, y=train_label, validation_split=0.2, epochs=1000, batch_size=20, callbacks=[early_stopper])
