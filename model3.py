@@ -105,9 +105,7 @@ predictions = Dense(21, activation='softmax')(x)
 # this is the model we will train
 model = Model(inputs=base_model.input, outputs=predictions)
 
-for layer in model.layers[:172]:
-    layer.trainable = False
-for layer in model.layers[172:]:
+for layer in model.layers:
     layer.trainable = True
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
