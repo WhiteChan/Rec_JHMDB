@@ -52,3 +52,16 @@ y_pred_kmeans = kmeans.fit_predict(x)
 
 acc = metrics.acc(y, y_pred_kmeans)
 print(acc)
+
+dims = [x.shape[-1], 500, 500, 2000, 10]
+init = VarianceScaling(scale=1. / 3., model='fan_in', distribution='uniform')
+pretrain_optimizer = SGD(lr=1, momentum=0.9)
+pretrain_epochs = 300
+batch_size = 256
+save_dir = './result'
+
+autoencoder, encoder = autoencoder(dims, init=init)
+
+autoencoder.compile(optimizer=pretrain_optimizer, loss='mse')
+autoencoder.fit(x, x, batch_size=batch_size, epochs=pretrain_epochs)
+autoencoder.save_weights(save_dir + '/ae_weights.h5')
