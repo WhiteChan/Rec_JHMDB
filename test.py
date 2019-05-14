@@ -54,7 +54,7 @@ acc = metrics.acc(y, y_pred_kmeans)
 print(acc)
 
 dims = [x.shape[-1], 500, 500, 2000, 10]
-init = VarianceScaling(scale=1. / 3., model='fan_in', distribution='uniform')
+init = VarianceScaling(scale=1. / 3., mode='fan_in', distribution='uniform')
 pretrain_optimizer = SGD(lr=1, momentum=0.9)
 pretrain_epochs = 300
 batch_size = 256
