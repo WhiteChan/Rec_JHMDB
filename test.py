@@ -1,94 +1,53 @@
-import pandas as pd 
-import numpy as np
-import cv2 as cv 
-import os 
-from keras.utils import np_utils
+from keras.datasets import mnist
+import numpy as np 
 
-def load_data_path():
-    path = 'data'
-    files = os.listdir(path)
-    s = []
-    for _file in files:
-        data_files = os.listdir(path + '/' + _file)
-        for data_file in data_files:
-            s.append([_file, data_file])
-    return s
+np.random.seed(10)
 
-def read_video_data(cap):
-    video_data = []
-#     i = 0
-#     while(i < 100):
-#         while(True):
-#             ret, frame = cap.read()
-#             if ret and i < 100:
-#                 video_data.append(frame)
-#                 cv.imshow('data', frame)
-#                 cv.waitKey(100)
-#                 i = i + 1
-#             else:
-#                 break
-#         if i < 100:
-#             video_data.append(np.zeros(shape=(240, 320, 3)))
-#             i = i + 1
-    for i in range(100):
-        ret, frame = cap.read()
-        if ret:
-            # frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-            video_data.append(frame)
-        else:
-            video_data.append(np.zeros(shape=(240, 320, 3)))
-    return video_data
+from time import time
+import keras.backend as K 
+from keras.engine.topology import Layer, InputSpec
+from keras.layers import Dense, Input
+from keras.models import Model  
+from keras.optimizers import SGD 
+from keras import callbacks 
+from keras.initializers import VarianceScaling
+from sklearn.cluster import KMeans 
+import metrics 
 
-def load_data(data_path, labels, labels_classes):
-    datasets = []
-    labels_OneHot = []
-    i = 0
-    for path in data_path:
-        filename = 'data/' + path[0] + '/' + path[1]
-        print('load data from: ', filename, i)
-        i = i + 1
-        cap = cv.VideoCapture(filename)        
-        datasets.append(read_video_data(cap))
-        labels_OneHot.append(labels_classes.index(path[0]))
-    # datasets = datasets.reshape([datasets.shape[0], 30, 240, 320, 1])
-    # for i in range(100):
-    #     cv.imshow('datasets', np.array(datasets[0][i]))
-    #     cv.waitKey(100)
-    # datasets = np.array(datasets)  # ******************************
-    labels_OneHot = np.array(labels_OneHot)
-    labels_OneHot = np_utils.to_categorical(labels_OneHot, num_classes=21)
+def autoencoder(dims, act='relu', init='glorot_uniform'):
+    n_stacks = len(dims) - 1
+    # input
+    input_img = Input(shape=(dims[0], ), name='input')
+    x = input_img 
+    # internal layers in encoder
+    for i in range(n_stacks - 1):
+        x = Dense(dims[i + 1], activation=act, kernel_initializer=init, name='encoder_%d' % i)(x)
+
+    # hidden layer
+    encoded = Dense(dims[-1], kernel_initializer=init, name='encoder_%d' % (n_stacks - 1))(x)
+    # hidden layer, features are extracted from here
+
+    x = encoded
+    # internal layers in decoder
+    for i in range(n_stacks - 1, 0, -1):
+        x = Dense(dims[0], activation=act, kernel_initializer=init, name='decoder_%d' % i)(x)
     
-    return datasets, labels_OneHot
+    # output
+    x = Dense(dims[0], kernel_initializer=init, name='decoder_0')(x)
+    decoded = x
+    return Model(inputs=input_img, outputs=decoded, name='AE'), Model(inputs=input_img, outputs=encoded, name='encoder')
 
-data_path = load_data_path()
-data_path = np.array(data_path)
-labels = data_path[:, 0]
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
 
-labels_classes = []
-for e in labels:
-    if e not in labels_classes:
-        labels_classes.append(e)
+x = np.concatenate((x_train, x_test))
+y = np.concatenate((y_train, y_test))
+x = x.reshape((x.shape[0], -1))
+x = np.divide(x, 255.)
 
-index = np.arange(928)
-np.random.shuffle(index)
+n_cluster = len(np.unique(y))
+# print(x.shape)
 
-train_data, train_label = load_data(data_path[index[:1]], labels, labels_classes)
-# print(train_data.shape)
-# train_data = train_data.reshape([-1, 30, 240, 320, 3])
+kmeans = KMeans(n_clusters=n_cluster, n_init=20, n_jobs=4)
+y_pred_kmeans = kmeans.fit_predict(x)
 
-print(np.shape(train_data))
-# print(train_data[0])
-
-train_data = np.array(train_data) / 255.
-
-for i in range(100):
-    cv.imshow('test', np.array(train_data[0][i]))
-    cv.waitKey(100)
-
-# for i in range(30):
-#     for j in range(30):
-#         # print(train_data[i][j])
-#         # frame = cv.UMat(train_data[i][j])
-#         cv.imshow('' + labels[index[i]], train_data[i][j])
-#         cv.waitKey(10)
-#     cv.destroyAllWindows()
+metrics.acc(y, y_pred_kmeans)
