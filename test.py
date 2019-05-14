@@ -50,4 +50,5 @@ n_cluster = len(np.unique(y))
 kmeans = KMeans(n_clusters=n_cluster, n_init=20, n_jobs=4)
 y_pred_kmeans = kmeans.fit_predict(x)
 
-metrics.acc(y, y_pred_kmeans)
+acc = metrics.acc(y, y_pred_kmeans)
+print(acc)
